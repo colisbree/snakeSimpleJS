@@ -14,6 +14,8 @@ class Snake {
 
   moveHead() {
     const head = this.blocks[0];
+    head.oldX = head.x;
+    head.oldY = head.y;
     switch (currentDirection) {
       case "left":
         head.x -= 1;
@@ -34,10 +36,48 @@ class Snake {
     head.teleportIfOutOfMap();
   }
 
+  calculateNewBlockPosition() {
+    let { x, y } = this.blocks[this.blocks.length - 1];
+    // c'est comme si on faisait : let x = head.x; let y = head.y;
+    switch (currentDirection) {
+      case "left":
+        x += 1;
+        break;
+      case "right":
+        x -= 1;
+        break;
+      case "up":
+        y += 1;
+        break;
+      case "down":
+        y -= 1;
+        break;
+
+      default:
+        break;
+    }
+    return { x, y };
+  }
+
+  eat() {
+    const head = this.blocks[0];
+    if (head.x === food.x && head.y === food.y) {
+      food.setRandomPosition();
+      const { x, y } = this.calculateNewBlockPosition();
+      this.addBlock(x, y);
+    }
+  }
+
   update() {
-    for (const block of this.blocks) {
+    this.moveHead();
+    this.eat();
+    for (const [index, block] of this.blocks.entries()) {
+      if (index > 0) {
+        const { oldX, oldY } = this.blocks[index - 1];
+        block.setPosition(oldX, oldY);
+      }
+
       block.draw();
     }
-    this.moveHead();
   }
 }
