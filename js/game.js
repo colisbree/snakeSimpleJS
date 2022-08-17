@@ -8,6 +8,7 @@ const snake = new Snake(SQUARE_SIZE);
 const food = new Food();
 
 let currentDirection = "right";
+let snakeLength = 1;
 
 function detecKeyPressed() {
   document.addEventListener("keydown", function (event) {
@@ -39,7 +40,13 @@ function update() {
   clearScreen();
   food.draw();
   snake.update();
-  setTimeout(update, 150);
+  if (snake.alive) {
+    setTimeout(update, 150);
+  } else {
+    alert(`Votre Serpent est mort !
+Il a atteint une logneur totale de ${snakeLength} blocks
+    `);
+  }
 }
 
 function start() {

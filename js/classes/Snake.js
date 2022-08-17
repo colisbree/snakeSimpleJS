@@ -5,6 +5,7 @@ class Snake {
     this.blockSize = SQUARE_SIZE;
     this.blocks = [];
     this.addBlock(this.x, this.y);
+    this.alive = true;
   }
 
   addBlock(x, y) {
@@ -65,7 +66,16 @@ class Snake {
       food.setRandomPosition();
       const { x, y } = this.calculateNewBlockPosition();
       this.addBlock(x, y);
+      snakeLength += 1;
     }
+  }
+
+  blockTouchHead(block) {
+    const head = this.blocks[0];
+    const headX = head.x;
+    const headY = head.y;
+
+    return headX === block.x && headY === block.y; // si return true alors snake dead
   }
 
   update() {
@@ -75,6 +85,9 @@ class Snake {
       if (index > 0) {
         const { oldX, oldY } = this.blocks[index - 1];
         block.setPosition(oldX, oldY);
+        if (this.blockTouchHead(block)) {
+          this.alive = false;
+        }
       }
 
       block.draw();
