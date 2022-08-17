@@ -6,12 +6,42 @@ const ctx = canvas.getContext("2d");
 
 const snake = new Snake(SQUARE_SIZE);
 
+let currentDirection = "right";
+
+function detecKeyPressed() {
+  document.addEventListener("keydown", function (event) {
+    switch (event.key) {
+      case "ArrowLeft":
+        currentDirection = "left";
+        break;
+      case "ArrowRight":
+        currentDirection = "right";
+        break;
+      case "ArrowUp":
+        currentDirection = "up";
+        break;
+      case "ArrowDown":
+        currentDirection = "down";
+        break;
+
+      default:
+        break;
+    }
+  });
+}
+
+function clearScreen() {
+  ctx.clearRect(0, 0, GAME_SIZE, GAME_SIZE);
+}
+
 function update() {
+  clearScreen();
   snake.update();
-  setTimeout(update, 300);
+  setTimeout(update, 150);
 }
 
 function start() {
+  detecKeyPressed();
   update();
 }
 

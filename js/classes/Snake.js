@@ -1,8 +1,8 @@
 class Snake {
-  constructor(sizes) {
+  constructor() {
     this.x = 0;
     this.y = 0;
-    this.blockSize = sizes;
+    this.blockSize = SQUARE_SIZE;
     this.blocks = [];
     this.addBlock(this.x, this.y);
   }
@@ -12,9 +12,32 @@ class Snake {
     this.blocks.push(block);
   }
 
+  moveHead() {
+    const head = this.blocks[0];
+    switch (currentDirection) {
+      case "left":
+        head.x -= 1;
+        break;
+      case "right":
+        head.x += 1;
+        break;
+      case "up":
+        head.y -= 1;
+        break;
+      case "down":
+        head.y += 1;
+        break;
+
+      default:
+        break;
+    }
+    head.teleportIfOutOfMap();
+  }
+
   update() {
     for (const block of this.blocks) {
       block.draw();
     }
+    this.moveHead();
   }
 }
