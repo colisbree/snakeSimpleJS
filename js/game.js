@@ -5,6 +5,7 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
 const snake = new Snake(SQUARE_SIZE);
+const food = new Food();
 
 let currentDirection = "right";
 
@@ -36,6 +37,7 @@ function clearScreen() {
 
 function update() {
   clearScreen();
+  food.draw();
   snake.update();
   setTimeout(update, 150);
 }
